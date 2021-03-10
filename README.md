@@ -2,6 +2,12 @@
 
 Docker image for `postgres` used as a database for projects made by Dekalabs.
 
+## Build images
+
+To build the images and push them to Dekalabs registry:
+
+    make
+
 ## Docker-compose example
 
 Example of a `docker-compose.yml` file that uses this image:
