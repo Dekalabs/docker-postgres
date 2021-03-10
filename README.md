@@ -6,7 +6,8 @@ Docker image for `postgres` used as a database for projects made by Dekalabs.
 
 To build the images and push them to Dekalabs registry:
 
-    make
+    make build
+    make push
 
 ## Docker-compose example
 
