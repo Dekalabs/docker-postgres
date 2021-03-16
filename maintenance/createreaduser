@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
+
+### Creates a read only user.
+###
+### Usage:
+###     $ docker-compose -f <environment>.yml (exec |run --rm) postgres createreaduser
+
+
 set -o errexit
 set -o nounset
 
