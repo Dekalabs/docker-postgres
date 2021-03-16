@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+set -o errexit
+set -o nounset
+
+working_dir="$(dirname ${0})"
+source "${working_dir}/_sourced/constants.sh"
+source "${working_dir}/_sourced/messages.sh"
+
+if [ -z "$POSTGRES_READ_ONLY_USER" ] || [ -z "$POSTGRES_READ_ONLY_PASSWORD" ] ; then
+    message_error "The environment variables POSTGRES_READ_ONLY_USER and POSTGRES_READ_ONLY_PASSWORD should be configured."
+    exit 1
+fi
+
+export PGHOST="${POSTGRES_HOST}"
+export PGPORT="${POSTGRES_PORT}"
+export PGUSER="${POSTGRES_USER}"
+export PGPASSWORD="${POSTGRES_PASSWORD}"
+export PGDATABASE="${POSTGRES_DB}"
+
+message_info "Creating read only user for '${POSTGRES_DB}' database..."
+
+psql -tc "SELECT 1 FROM pg_catalog.pg_roles WHERE rolname = '${POSTGRES_READ_ONLY_USER}'" | grep -q 1 || psql -c "CREATE ROLE \"${POSTGRES_READ_ONLY_USER}\" WITH LOGIN PASSWORD '${POSTGRES_READ_ONLY_PASSWORD}' NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION VALID UNTIL 'infinity';"
+
+message_info "Grant permission to '${POSTGRES_READ_ONLY_USER}' user..."
+
+psql -v ON_ERROR_STOP=1 <<-EOSQL
+    GRANT CONNECT ON DATABASE ${POSTGRES_DB} TO "${POSTGRES_READ_ONLY_USER}";
+    GRANT USAGE ON SCHEMA public TO "${POSTGRES_READ_ONLY_USER}";
+    GRANT SELECT ON ALL TABLES IN SCHEMA public TO "${POSTGRES_READ_ONLY_USER}";
+    GRANT SELECT ON ALL SEQUENCES IN SCHEMA public TO "${POSTGRES_READ_ONLY_USER}";
+EOSQL
+
+message_success "The user '${POSTGRES_READ_ONLY_USER}' has been created with read-only permissions."
