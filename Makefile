@@ -22,7 +22,7 @@ push_postgres:
 build_posgis:
 	docker build . -f ./postgis/11/Dockerfile --tag ${POSTGIS_IMAGE_ID}:11-2.5 --tag ${POSTGIS_IMAGE_ID}:11
 	docker build . -f ./postgis/12/Dockerfile --tag ${POSTGIS_IMAGE_ID}:12-3.0 --tag ${POSTGIS_IMAGE_ID}:12
-	docker build . -f ./postgis/12/Dockerfile --tag ${POSTGIS_IMAGE_ID}:13-3.1 --tag ${POSTGIS_IMAGE_ID}:13 --tag ${POSTGIS_IMAGE_ID}:latest
+	docker build . -f ./postgis/13/Dockerfile --tag ${POSTGIS_IMAGE_ID}:13-3.1 --tag ${POSTGIS_IMAGE_ID}:13 --tag ${POSTGIS_IMAGE_ID}:latest
 
 push_posgis:
 	docker push ${POSTGIS_IMAGE_ID}:11
