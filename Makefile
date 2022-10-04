@@ -1,7 +1,7 @@
 # Variables
 # ------------------------------------------------------------------------------
-POSTGRES_IMAGE_ID=registry.dekaside.com/library/postgres
-POSTGIS_IMAGE_ID=registry.dekaside.com/library/postgis
+POSTGRES_IMAGE_ID=dekalabs/postgres
+POSTGIS_IMAGE_ID=dekalabs/postgis
 
 .PHONY: build_posgres push_postgres build_posgis push_posgis
 
