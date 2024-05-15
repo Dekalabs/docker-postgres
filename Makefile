@@ -10,15 +10,18 @@ build_postgres:
 	docker buildx build . -f ./postgres/11/Dockerfile --tag ${POSTGRES_IMAGE_ID}:11 --platform linux/amd64,linux/arm64
 	docker buildx build . -f ./postgres/12/Dockerfile --tag ${POSTGRES_IMAGE_ID}:12 --platform linux/amd64,linux/arm64
 	docker buildx build . -f ./postgres/13/Dockerfile --tag ${POSTGRES_IMAGE_ID}:13 --platform linux/amd64,linux/arm64
-	docker buildx build . -f ./postgres/14/Dockerfile --tag ${POSTGRES_IMAGE_ID}:14 --tag ${POSTGRES_IMAGE_ID}:latest --platform linux/amd64,linux/arm64
+	docker buildx build . -f ./postgres/14/Dockerfile --tag ${POSTGRES_IMAGE_ID}:14 --platform linux/amd64,linux/arm64
+	docker buildx build . -f ./postgres/15/Dockerfile --tag ${POSTGRES_IMAGE_ID}:15 --platform linux/amd64,linux/arm64
+	docker buildx build . -f ./postgres/16/Dockerfile --tag ${POSTGRES_IMAGE_ID}:16 --tag ${POSTGRES_IMAGE_ID}:latest --platform linux/amd64,linux/arm64
 
 push_postgres:
 	docker buildx build . -f ./postgres/10/Dockerfile --tag ${POSTGRES_IMAGE_ID}:10 --platform linux/amd64,linux/arm64 --push
 	docker buildx build . -f ./postgres/11/Dockerfile --tag ${POSTGRES_IMAGE_ID}:11 --platform linux/amd64,linux/arm64 --push
 	docker buildx build . -f ./postgres/12/Dockerfile --tag ${POSTGRES_IMAGE_ID}:12 --platform linux/amd64,linux/arm64 --push
 	docker buildx build . -f ./postgres/13/Dockerfile --tag ${POSTGRES_IMAGE_ID}:13 --platform linux/amd64,linux/arm64 --push
-	docker buildx build . -f ./postgres/14/Dockerfile --tag ${POSTGRES_IMAGE_ID}:14 --tag ${POSTGRES_IMAGE_ID}:latest --platform linux/amd64,linux/arm64 --push
-
+	docker buildx build . -f ./postgres/14/Dockerfile --tag ${POSTGRES_IMAGE_ID}:14 --platform linux/amd64,linux/arm64 --push
+	docker buildx build . -f ./postgres/15/Dockerfile --tag ${POSTGRES_IMAGE_ID}:15 --platform linux/amd64,linux/arm64 --push
+	docker buildx build . -f ./postgres/16/Dockerfile --tag ${POSTGRES_IMAGE_ID}:16 --tag ${POSTGRES_IMAGE_ID}:latest --platform linux/amd64,linux/arm64 --push
 
 build_postgis:
 	docker buildx build . -f ./postgis/11/Dockerfile --tag ${POSTGIS_IMAGE_ID}:11-2.5 --tag ${POSTGIS_IMAGE_ID}:11 --platform linux/amd64,linux/arm64
