@@ -25,7 +25,6 @@ def cleanup_backups_and_containers():
         for file in files:
             if re.match(backup_pattern, file):
                 os.remove(os.path.join(root, file))
-    print(client.containers.list(all=True))
     for container in client.containers.list(all=True):
         if "test_postgres" in container.name:
             container.stop()
