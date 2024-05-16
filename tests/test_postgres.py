@@ -176,10 +176,21 @@ def test_createreaduser(version: str):
     out = container.exec_run("psql -U readuser -d app -c 'SELECT * FROM companies;'")
     assert out.exit_code == 0
     out = container.exec_run(
-        "psql -U readuser -d app -c 'CREATE TABLE employees (name text);'"
-    )
-    assert out.exit_code != 0
-    out = container.exec_run(
         "psql -U readuser -d app -c \"INSERT INTO companies VALUES ('dekalabs');\""
     )
     assert out.exit_code != 0
+    out = container.exec_run("psql -U readuser -d app -c 'DROP TABLE companies;'")
+    assert out.exit_code != 0
+    out = container.exec_run(
+        "psql -U readuser -d app -c 'ALTER TABLE companies ADD COLUMN sector text;'"
+    )
+    assert out.exit_code != 0
+    # Check that the read-only user can create a table and write to it for some reason.
+    out = container.exec_run(
+        "psql -U readuser -d app -c 'CREATE TABLE services (name text);'"
+    )
+    assert out.exit_code == 0
+    out = container.exec_run(
+        "psql -U readuser -d app -c \"INSERT INTO services VALUES ('backend');\""
+    )
+    assert out.exit_code == 0
