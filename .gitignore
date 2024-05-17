@@ -9,3 +9,7 @@
 *.sln
 *.sw*
 
+# Python
+.venv
+.pytest_cache/
+__pycache__/
