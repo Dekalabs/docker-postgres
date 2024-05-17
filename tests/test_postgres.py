@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 client = docker.from_env()
 base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 backup_pattern = r"backup_\d{4}_\d{2}_\d{2}T\d{2}_\d{2}_\d{2}\.sql\.gz"
-versions = ["10", "11", "12", "13", "14"]
+versions = ["10", "11", "12", "13", "14", "15", "16"]
 default_retries = 3
 
 
@@ -84,6 +84,7 @@ def wait_until_pg_isready(container: "Container"):
             break
         retries -= 1
         time.sleep(1)
+    time.sleep(0.2)
 
 
 @pytest.mark.parametrize(["version"], [[version] for version in versions])
@@ -185,12 +186,15 @@ def test_createreaduser(version: str):
         "psql -U readuser -d app -c 'ALTER TABLE companies ADD COLUMN sector text;'"
     )
     assert out.exit_code != 0
-    # Check that the read-only user can create a table and write to it for some reason.
+    # Check that the read-only user can create a table in PostgreSQL < 15.
     out = container.exec_run(
         "psql -U readuser -d app -c 'CREATE TABLE services (name text);'"
     )
-    assert out.exit_code == 0
-    out = container.exec_run(
-        "psql -U readuser -d app -c \"INSERT INTO services VALUES ('backend');\""
-    )
-    assert out.exit_code == 0
+    if int(version) < 15:
+        assert out.exit_code == 0
+        out = container.exec_run(
+            "psql -U readuser -d app -c \"INSERT INTO services VALUES ('backend');\""
+        )
+        assert out.exit_code == 0
+    else:
+        assert out.exit_code != 0
