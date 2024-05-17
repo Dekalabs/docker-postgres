@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "docker-postgres"
+version = "0.1.0"
+description = ""
+authors = [
+    "Marcos Gabarda <hey@marcosgabarda.com>",
+    "Tino Martínez Molina <tino@martinezmolina.es>",
+]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.2.0"
+docker = "^7.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
